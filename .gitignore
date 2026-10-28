@@ -6,3 +6,4 @@ server.log
 server.err
 .DS_Store
 .env
+deploy/provision-result.json

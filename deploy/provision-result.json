@@ -1,8 +1,0 @@
-{
-  "instance_id": "ocid1.instance.oc1.ap-melbourne-1.anwwkljrprarmqqcdy3ajv4rd3yzbwbkea3hfr7c6e5futustif322ec7jva",
-  "shape": "VM.Standard.E2.1.Micro",
-  "compartment_id": "ocid1.tenancy.oc1..aaaaaaaay4whtricrvo6u2epoi6er7xdx7haqehq7l3dkzgkoxdbxwd5qm5a",
-  "public_ip": "152.69.178.242",
-  "hostname": "arena.152.69.178.242.sslip.io",
-  "api_base": "https://arena.152.69.178.242.sslip.io"
-}
