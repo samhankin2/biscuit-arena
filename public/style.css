@@ -153,24 +153,6 @@ button:disabled {
   font-weight: 850;
 }
 
-.header-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.header-tag > span {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--sage);
-  box-shadow: 0 0 0 3px rgba(105, 120, 88, 0.13);
-}
-
 .app-shell {
   width: min(100% - 32px, 480px);
   margin: 0 auto;
@@ -179,24 +161,6 @@ button:disabled {
 
 .screen {
   animation: screen-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin: 0 0 10px;
-  color: var(--caramel);
-  font-size: 12px;
-  font-weight: 850;
-  letter-spacing: 0.13em;
-  line-height: 1.4;
-  text-transform: uppercase;
-}
-
-.eyebrow > span {
-  color: var(--cookie);
-  font-size: 16px;
 }
 
 h1,
@@ -238,19 +202,10 @@ h3 {
   letter-spacing: -0.025em;
 }
 
-.hero-subtitle,
 .screen-intro {
   color: var(--muted);
   font-size: 16px;
   line-height: 1.55;
-}
-
-.hero-subtitle {
-  max-width: 320px;
-  margin-bottom: 22px;
-}
-
-.screen-intro {
   margin-bottom: 22px;
 }
 
@@ -342,18 +297,6 @@ h3 {
   right: 14%;
   bottom: 31px;
   transform: rotate(14deg);
-}
-
-.ticket-caption {
-  position: absolute;
-  bottom: 11px;
-  left: 0;
-  right: 0;
-  color: rgba(56, 35, 27, 0.56);
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 0.22em;
-  text-align: center;
 }
 
 .entry-card {
@@ -537,22 +480,6 @@ input[aria-invalid="true"] {
 
 .results-link:hover span:last-child {
   transform: translateX(3px);
-}
-
-.welcome-footnote {
-  margin: 4px 0 0;
-  color: var(--muted);
-  font-size: 12px;
-  text-align: center;
-}
-
-.how-it-works {
-  margin: 14px 0 0;
-  padding: 0 6px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.5;
-  text-align: center;
 }
 
 /* Rating card */
@@ -803,10 +730,6 @@ div.form-error .button {
 .success-screen {
   padding-top: 22px;
   text-align: center;
-}
-
-.success-screen .eyebrow {
-  justify-content: center;
 }
 
 .success-screen .screen-intro {
@@ -1145,7 +1068,6 @@ div.form-error .button {
 }
 
 .empty-results > span { font-size: 44px; }
-.empty-results h3 { margin: 10px 0 6px; }
 .empty-results p { margin: 0; color: var(--muted); font-size: 14px; }
 
 .results-rate-button {
@@ -1200,7 +1122,6 @@ div.form-error .button {
   .entry-card { padding: 17px; }
   .ticket-emoji-left { left: 9%; }
   .ticket-emoji-right { right: 9%; }
-  .header-tag { font-size: 11px; }
   .biscuit-card { padding: 14px 12px; }
   .star-button { min-width: 38px; font-size: 29px; }
   .dock-summary { font-size: 10px; }

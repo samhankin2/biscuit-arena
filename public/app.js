@@ -6,7 +6,6 @@
   const STORAGE_KEY = "biscuit-arena-participant-name";
   // Empty when the frontend is served by the API itself; set in api-config.js when hosted apart.
   const API_BASE = String(window.ARENA_API_BASE || "").replace(/\/+$/, "");
-  const scoreDescriptions = ["", "Not for me", "Not bad", "Pretty good", "Really good", "All-time favourite"];
 
   const state = {
     config: null,
@@ -82,7 +81,7 @@
   function requireName() {
     const name = elements.name.value.trim();
     if (!name) {
-      elements.nameError.textContent = "Add your name before you start judging.";
+      elements.nameError.textContent = "Enter your name.";
       elements.nameError.hidden = false;
       elements.name.setAttribute("aria-invalid", "true");
       elements.name.focus();
@@ -122,7 +121,6 @@
     state.config = config;
     state.biscuits = Array.isArray(config.biscuits) ? config.biscuits : [];
     $("#welcome-title").textContent = config.title;
-    $("#welcome-subtitle").textContent = config.subtitle;
     document.title = config.title;
     return config;
   }
@@ -135,12 +133,12 @@
     const complete = total > 0 && rated === total;
 
     $("#rating-progress-text").textContent = `Rated ${rated} of ${total}`;
-    $("#rating-progress-note").textContent = complete ? "Judging card complete!" : rated === 0 ? "Let’s get tasting" : `${remaining} to go`;
+    $("#rating-progress-note").textContent = complete ? "Done" : rated === 0 ? "" : `${remaining} to go`;
     $("#rating-progressbar").setAttribute("aria-valuemax", String(total));
     $("#rating-progressbar").setAttribute("aria-valuenow", String(rated));
     $("#rating-progress-fill").style.width = total ? `${(rated / total) * 100}%` : "0%";
     $("#dock-progress").textContent = `${rated} / ${total} rated`;
-    $("#dock-message").textContent = complete ? "Ready to crown a champion" : "Rate every biscuit to submit";
+    $("#dock-message").textContent = complete ? "" : "Rate all 10 to submit";
     elements.submitButton.disabled = !complete || state.submitting;
   }
 
@@ -158,7 +156,7 @@
       button.textContent = filled ? "★" : "☆";
       button.setAttribute("aria-pressed", String(buttonScore === score));
     });
-    card.querySelector(".rating-hint").textContent = score ? `${score}/5 · ${scoreDescriptions[score]}` : "Tap to rate";
+    card.querySelector(".rating-hint").textContent = score ? `${score}/5` : "Tap to rate";
 
     if (animate) {
       card.classList.remove("just-rated");
@@ -190,8 +188,8 @@
             </div>
           </div>
           <div class="star-rating" role="group" aria-label="${name} rating">${stars}</div>
-          <label class="sr-only" for="note-${id}">Optional note for ${name}</label>
-          <input class="biscuit-note" id="note-${id}" data-note-id="${id}" type="text" maxlength="500" placeholder="Optional note" />
+          <label class="sr-only" for="note-${id}">Note for ${name}</label>
+          <input class="biscuit-note" id="note-${id}" data-note-id="${id}" type="text" maxlength="500" placeholder="Note" />
         </article>
       `;
     }).join("");
@@ -204,7 +202,7 @@
     state.ratings = new Map();
     state.submitting = false;
     elements.submitError.hidden = true;
-    elements.submitLabel.textContent = "Submit my scores";
+    elements.submitLabel.textContent = "Submit";
     $("#overall-comment").value = "";
     elements.biscuitList.innerHTML = "";
     elements.ratingsForm.hidden = true;
@@ -258,7 +256,7 @@
 
     state.submitting = true;
     elements.submitError.hidden = true;
-    elements.submitLabel.textContent = "Sending scores…";
+    elements.submitLabel.textContent = "Sending…";
     updateProgress();
 
     const ratings = state.biscuits.map((biscuit) => {
@@ -288,7 +286,7 @@
       elements.submitError.focus();
     } finally {
       state.submitting = false;
-      elements.submitLabel.textContent = "Submit my scores";
+      elements.submitLabel.textContent = "Submit";
       updateProgress();
     }
   }
@@ -337,7 +335,7 @@
     }).join("") : "";
 
     const time = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date());
-    $("#results-updated").textContent = `Updated at ${time}`;
+    $("#results-updated").textContent = `Updated ${time}`;
   }
 
   async function loadResults() {

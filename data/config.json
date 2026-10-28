@@ -1,6 +1,5 @@
 {
   "title": "Arnott's Biscuit Arena",
-  "subtitle": "Rate all 10 biscuits. Highest average wins.",
   "biscuits": [
     { "id": "tim-tam", "name": "Tim Tam", "emoji": "🍫" },
     { "id": "bbq-shapes", "name": "BBQ Shapes", "emoji": "🔥" },

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#f7efe2" />
-    <meta name="description" content="Taste and rate your way through the Arnott's Biscuit Arena." />
+    <meta name="description" content="Arnott's Biscuit Arena" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23d9904f'/%3E%3Ccircle cx='22' cy='23' r='4' fill='%23532f22'/%3E%3Ccircle cx='41' cy='20' r='3' fill='%23532f22'/%3E%3Ccircle cx='39' cy='41' r='5' fill='%23532f22'/%3E%3Ccircle cx='19' cy='42' r='3' fill='%23532f22'/%3E%3C/svg%3E" />
     <title>Arnott's Biscuit Arena</title>
     <link rel="stylesheet" href="style.css" />
@@ -17,15 +17,12 @@
         <span class="brand-mark" aria-hidden="true">🍪</span>
         <span class="brand-name">Biscuit <strong>Arena</strong></span>
       </button>
-      <span class="header-tag"><span aria-hidden="true"></span> Office edition</span>
     </header>
 
     <main class="app-shell" id="app">
       <section class="screen welcome-screen" id="welcome-screen" aria-labelledby="welcome-title">
         <div class="hero">
-          <p class="eyebrow"><span aria-hidden="true">✦</span> The great office snack-off</p>
           <h1 id="welcome-title">Arnott's<br />Biscuit Arena</h1>
-          <p class="hero-subtitle" id="welcome-subtitle">Rate all 10 biscuits. Highest average wins.</p>
 
           <div class="arena-ticket" aria-hidden="true">
             <span class="ticket-emoji ticket-emoji-left">🍫</span>
@@ -35,13 +32,12 @@
               <span class="medal-star">★</span>
             </div>
             <span class="ticket-emoji ticket-emoji-right">🍋</span>
-            <span class="ticket-caption">TASTE · RATE · CROWN</span>
           </div>
         </div>
 
         <div class="entry-card">
           <div class="field-block">
-            <label for="participant-name">First, who’s judging?</label>
+            <label for="participant-name">Name</label>
             <input
               id="participant-name"
               name="name"
@@ -56,32 +52,26 @@
           </div>
 
           <button class="button button-primary start-button" id="start-judging" type="button">
-            Start judging
+            Start
             <span class="button-arrow" aria-hidden="true">→</span>
           </button>
         </div>
 
         <button class="text-button results-link" id="view-results" type="button">
-          <span aria-hidden="true">🏆</span> View the live leaderboard <span aria-hidden="true">→</span>
+          Leaderboard <span aria-hidden="true">→</span>
         </button>
-        <p class="how-it-works">
-          How it works: scan the QR code with your phone camera, rate all 10 biscuits, and watch the
-          leaderboard update.
-        </p>
-        <p class="welcome-footnote">10 biscuits. 5 stars each. Serious bragging rights.</p>
       </section>
 
       <section class="screen rating-screen" id="rating-screen" aria-labelledby="rating-title" hidden>
-        <button class="back-button" id="rating-back" type="button"><span aria-hidden="true">←</span> Back to start</button>
+        <button class="back-button" id="rating-back" type="button"><span aria-hidden="true">←</span> Back</button>
 
-        <p class="eyebrow">Your judging card</p>
-        <h2 id="rating-title" tabindex="-1">Time to judge.</h2>
-        <p class="screen-intro">Give every biscuit a score from 1 to 5. No notes needed — unless you’ve got something to say.</p>
+        <h2 id="rating-title" tabindex="-1">Rate the biscuits</h2>
+        <p class="screen-intro">Score each biscuit from 1 to 5.</p>
 
         <div class="rating-progress" aria-live="polite">
           <div class="progress-copy">
             <strong id="rating-progress-text">Rated 0 of 10</strong>
-            <span id="rating-progress-note">Let’s get tasting</span>
+            <span id="rating-progress-note"></span>
           </div>
           <div class="progress-track" role="progressbar" aria-label="Biscuits rated" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="rating-progressbar">
             <span id="rating-progress-fill"></span>
@@ -89,32 +79,32 @@
         </div>
 
         <div class="form-error" id="rating-load-error" role="alert" hidden>
-          <strong>We couldn’t load the judging card.</strong>
+          <strong>Couldn’t load.</strong>
           <span id="rating-load-error-message">Check your connection and try again.</span>
           <button class="button button-secondary" id="retry-form" type="button">Try again</button>
         </div>
 
         <div class="loading-state" id="rating-loading" aria-live="polite" hidden>
           <span class="loading-cookie" aria-hidden="true">🍪</span>
-          <p>Setting out the biscuits…</p>
+          <p>Loading…</p>
         </div>
 
         <form id="ratings-form" novalidate>
           <div class="biscuit-list" id="biscuit-list"></div>
 
           <div class="overall-comment field-block" id="overall-comment-block">
-            <label for="overall-comment">Anything else to add? <span>Optional</span></label>
-            <textarea id="overall-comment" rows="3" maxlength="1000" placeholder="Your final thoughts on the spread…"></textarea>
+            <label for="overall-comment">Comment <span>Optional</span></label>
+            <textarea id="overall-comment" rows="3" maxlength="1000" placeholder=""></textarea>
           </div>
 
           <p class="form-error" id="submit-error" role="alert" hidden></p>
           <div class="submit-dock" id="submit-dock">
             <div class="dock-summary">
               <span id="dock-progress">0 / 10 rated</span>
-              <span id="dock-message">Rate every biscuit to submit</span>
+              <span id="dock-message">Rate all 10 to submit</span>
             </div>
             <button class="button button-primary" id="submit-ratings" type="submit" disabled>
-              <span id="submit-label">Submit my scores</span>
+              <span id="submit-label">Submit</span>
               <span class="button-arrow" aria-hidden="true">→</span>
             </button>
           </div>
@@ -129,47 +119,43 @@
           <span class="confetti confetti-four"></span>
           <div class="success-medal">✓</div>
         </div>
-        <p class="eyebrow">Scores are in</p>
-        <h2 id="success-title" tabindex="-1">Nice judging,<br /><span id="success-name">champion</span>.</h2>
-        <p class="screen-intro">Your biscuit verdicts have been added to the leaderboard.</p>
+        <h2 id="success-title" tabindex="-1"><span id="success-name">champion</span></h2>
 
         <div class="average-card">
-          <span>Your average score</span>
+          <span>Average</span>
           <strong id="success-average">0.0</strong>
-          <span class="average-out-of">out of 5 <span aria-hidden="true">★</span></span>
+          <span class="average-out-of">/ 5 <span aria-hidden="true">★</span></span>
         </div>
 
         <div class="success-actions">
-          <button class="button button-primary" id="success-results" type="button">See the leaderboard <span aria-hidden="true">→</span></button>
+          <button class="button button-primary" id="success-results" type="button">Leaderboard <span aria-hidden="true">→</span></button>
           <button class="button button-secondary" id="rate-again" type="button">Rate again</button>
         </div>
-        <button class="text-button" id="success-home" type="button">Back to start</button>
+        <button class="text-button" id="success-home" type="button">Back</button>
       </section>
 
       <section class="screen results-screen" id="results-screen" aria-labelledby="results-title" hidden>
-        <button class="back-button" id="results-back" type="button"><span aria-hidden="true">←</span> Back to start</button>
-        <p class="eyebrow">The crumb-down</p>
+        <button class="back-button" id="results-back" type="button"><span aria-hidden="true">←</span> Back</button>
         <div class="results-heading">
           <div>
             <h2 id="results-title" tabindex="-1">Leaderboard</h2>
-            <p class="screen-intro">The people have tasted. Here’s how the biscuits stack up.</p>
           </div>
-          <button class="refresh-button" id="refresh-results" type="button" aria-label="Refresh leaderboard">
+          <button class="refresh-button" id="refresh-results" type="button" aria-label="Refresh">
             <span aria-hidden="true">↻</span>
           </button>
         </div>
 
         <div class="results-stats" id="results-stats" hidden>
           <div><strong id="total-participants">0</strong><span>Participants</span></div>
-          <div><strong id="recent-submissions">0</strong><span>Recent entries</span></div>
+          <div><strong id="recent-submissions">0</strong><span>Recent</span></div>
         </div>
 
         <div class="loading-state" id="results-loading" aria-live="polite">
           <span class="loading-cookie" aria-hidden="true">🍪</span>
-          <p>Counting the crumbs…</p>
+          <p>Loading…</p>
         </div>
         <div class="form-error" id="results-error" role="alert" hidden>
-          <strong>We couldn’t load the leaderboard.</strong>
+          <strong>Couldn’t load the leaderboard.</strong>
           <span id="results-error-message">Check your connection and try again.</span>
           <button class="button button-secondary" id="retry-results" type="button">Try again</button>
         </div>
@@ -178,7 +164,7 @@
           <div class="leader-crown" aria-hidden="true">♛</div>
           <div class="leader-emoji" id="leader-emoji" aria-hidden="true">🍪</div>
           <div class="leader-copy">
-            <span>Current champion</span>
+            <span>Champion</span>
             <strong id="leader-name"></strong>
             <small id="leader-votes"></small>
           </div>
@@ -188,11 +174,10 @@
         <div class="leaderboard" id="leaderboard" aria-live="polite"></div>
         <div class="empty-results" id="empty-results" hidden>
           <span aria-hidden="true">🍪</span>
-          <h3>The arena is wide open.</h3>
-          <p>No scores yet. Be the first to put a biscuit on the board.</p>
+          <p>No scores yet.</p>
         </div>
 
-        <button class="button button-primary results-rate-button" id="results-rate" type="button">Rate the biscuits <span aria-hidden="true">→</span></button>
+        <button class="button button-primary results-rate-button" id="results-rate" type="button">Rate <span aria-hidden="true">→</span></button>
         <p class="results-updated" id="results-updated" aria-live="polite"></p>
       </section>
     </main>
