@@ -25,8 +25,9 @@ log "current commit: $PREV_SHA"
 log "fetching origin/$BRANCH"
 git fetch --quiet origin "$BRANCH"
 
-if ! git diff --quiet HEAD "origin/$BRANCH" --; then
-  log "updating to origin/$BRANCH"
+REMOTE_SHA="$(git rev-parse "origin/$BRANCH")"
+if [ "$REMOTE_SHA" != "$PREV_SHA" ]; then
+  log "updating to origin/$BRANCH ($REMOTE_SHA)"
   git checkout --quiet "$BRANCH"
   git merge --ff-only --quiet "origin/$BRANCH"
   NEW_SHA="$(git rev-parse HEAD)"
@@ -36,6 +37,12 @@ if ! git diff --quiet HEAD "origin/$BRANCH" --; then
   if ! git diff --quiet "$PREV_SHA" "$NEW_SHA" -- package.json; then
     log "package.json changed -> npm ci"
     npm ci --omit=dev --no-audit --no-fund
+  fi
+
+  # Keep the deployed copy of this script in step with the repository.
+  if [ -f "$APP_DIR/deploy/arena-deploy.sh" ]; then
+    install -m 0755 "$APP_DIR/deploy/arena-deploy.sh" /usr/local/bin/arena-deploy
+    log "refreshed /usr/local/bin/arena-deploy"
   fi
 else
   log "already up to date, restarting anyway"
