@@ -1,0 +1,24 @@
+# Caddy reverse proxy for the Arnott's Biscuit Arena.
+#
+# Caddy obtains and renews a free Let's Encrypt certificate automatically.
+# Replace arena.example.com with a hostname that points at this VPS.
+#
+# No domain? Use a free one (DuckDNS, Cloudflare) or run a Cloudflare Tunnel:
+#   cloudflared tunnel --url http://127.0.0.1:3000
+#
+# If you serve the frontend from GitHub Pages instead, you can also expose the
+# API only — but it still must be HTTPS, otherwise the browser blocks the
+# request as mixed content.
+
+arena.example.com {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		-Server
+	}
+
+	reverse_proxy 127.0.0.1:3000
+}

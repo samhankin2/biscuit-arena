@@ -1,0 +1,16 @@
+{
+  "title": "Arnott's Biscuit Arena",
+  "subtitle": "Rate all 10 biscuits. Highest average wins.",
+  "biscuits": [
+    { "id": "tim-tam", "name": "Tim Tam", "emoji": "🍫" },
+    { "id": "bbq-shapes", "name": "BBQ Shapes", "emoji": "🔥" },
+    { "id": "chicken-arnotts", "name": "Chicken Arnott's", "emoji": "🐔" },
+    { "id": "chocolate-chip", "name": "Chocolate Chip", "emoji": "🍪" },
+    { "id": "lemon-crisp", "name": "Lemon Crisp", "emoji": "🍋" },
+    { "id": "golden-gaytime", "name": "Golden Gaytime", "emoji": "🎉" },
+    { "id": "mint-slice", "name": "Mint Slice", "emoji": "🌿" },
+    { "id": "sausage-roll", "name": "Sausage Roll", "emoji": "🌭" },
+    { "id": "custard-cream", "name": "Custard Cream", "emoji": "🍮" },
+    { "id": "savala", "name": "Savala", "emoji": "🥨" }
+  ]
+}

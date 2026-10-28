@@ -1,0 +1,27 @@
+[Unit]
+Description=Arnott's Biscuit Arena (API + static frontend)
+Documentation=https://github.com/your-org/biscuit-arena
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=arena
+Group=arena
+WorkingDirectory=/opt/biscuit-arena
+Environment=PORT=3000
+Environment=HOST=127.0.0.1
+Environment=DATA_DIR=/var/lib/biscuit-arena
+Environment=CONFIG_DIR=/opt/biscuit-arena/data
+ExecStart=/usr/bin/node /opt/biscuit-arena/server.js
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/biscuit-arena
+
+[Install]
+WantedBy=multi-user.target

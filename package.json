@@ -1,0 +1,13 @@
+{
+  "name": "biscuit-arena",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Arnott's biscuit competition — QR scan, rate 10 biscuits, submit to SQLite",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
