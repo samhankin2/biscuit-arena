@@ -1,0 +1,55 @@
+name: Deploy API to Oracle VPS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "server.js"
+      - "package.json"
+      - "public/**"
+      - "data/config.json"
+      - "deploy/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: arena-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Oracle VPS
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy
+        env:
+          ARENA_HOST: ${{ vars.ARENA_HOST }}
+          ARENA_SSH_KEY: ${{ secrets.ARENA_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$ARENA_SSH_KEY" > ~/.ssh/arena_deploy_key
+          chmod 600 ~/.ssh/arena_deploy_key
+          ssh -i ~/.ssh/arena_deploy_key \
+              -o StrictHostKeyChecking=accept-new \
+              -o IdentitiesOnly=yes \
+              "ubuntu@$ARENA_HOST" \
+              "sudo /usr/local/bin/arena-deploy"
+
+      - name: Verify public API
+        run: |
+          set -euo pipefail
+          API="https://arena.${ARENA_HOST}.sslip.io"
+          for attempt in $(seq 1 10); do
+            if curl -fsS "$API/api/health"; then
+              echo
+              echo "public API healthy at $API"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "public API did not become healthy" >&2
+          exit 1
+        env:
+          ARENA_HOST: ${{ vars.ARENA_HOST }}
