@@ -120,17 +120,69 @@ The frontend uses **relative asset paths**, so it works from a GitHub Pages
 sub-path (`https://you.github.io/biscuit-arena/`) as well as from the domain
 root.
 
-## 4. Day-of operations
+## 4. Deploying changes to the API
+
+**Push to `main` and that's it.** `.github/workflows/deploy.yml` runs on every
+push that touches the app, SSHes to the VPS and runs the deploy script:
+
+```
+git add -A && git commit -m "..." && git push
+```
+
+The deploy script (`deploy/arena-deploy.sh`, installed on the box as
+`/usr/local/bin/arena-deploy`) does this:
+
+1. `git fetch` + fast-forward `main` to the new commit
+2. `npm ci --omit=dev` — only when `package.json` changed
+3. writes the new commit SHA to `/var/lib/biscuit-arena/commit.txt`
+4. restarts the `arena` systemd service
+5. health-checks `http://127.0.0.1:3000/api/health` for 15 seconds
+6. **rolls back** to the previous commit and restarts if the health check fails
+
+The workflow then re-checks the public URL, so a failed deploy shows up as a
+red X on the commit and never reaches users.
+
+Confirm what is live at any time:
+
+```bash
+curl https://arena.152.69.178.242.sslip.io/api/health
+# {"ok":true,"submissions":0,"commit":"5d62deea2415b0d21fa2d4ae4166931c919d7904"}
+```
+
+**Manual deploy** (no CI, useful if GitHub is down):
+
+```bash
+ssh -i ~/.ssh/biscuit_arena_oracle ubuntu@152.69.178.242 "sudo /usr/local/bin/arena-deploy"
+```
+
+### How the pieces are wired
+
+| Piece | Where | Deployed by |
+| --- | --- | --- |
+| Frontend | `https://samhankin2.github.io/biscuit-arena/` | `.github/workflows/pages.yml` (auto, on push) |
+| API | `https://arena.152.69.178.242.sslip.io` | `.github/workflows/deploy.yml` (auto, on push) |
+
+The frontend reads the API origin from `public/api-config.js`; the Pages
+workflow rewrites that file from the repository variable `API_BASE_URL`, so the
+API address is changed in one place (Settings → Secrets and variables → Actions
+→ Variables) and never in code.
+
+Repository secrets/variables used by CI:
+
+- secret `ARENA_SSH_KEY` — the CI deploy key's private half
+- variable `ARENA_HOST` — the VPS public IP
+
+## 5. Day-of operations
 
 ```bash
 systemctl status arena         # is it up?
 journalctl -u arena -f         # live logs
-sudo systemctl restart arena   # after changing data/config.json
+sudo systemctl restart arena   # restart without deploying
 ```
 
 **Change the biscuits** — edit `data/config.json` (names, emoji, order) and
-restart the service. Ratings already stored keep working: the biscuit ids are
-the join key.
+push. The deploy workflow restarts the service. Ratings already stored keep
+working: the biscuit ids are the join key.
 
 **Back up the results** — the whole database is one file:
 
@@ -146,18 +198,18 @@ sudo rm -f /var/lib/biscuit-arena/arena.db*
 sudo systemctl start arena
 ```
 
-**Print the QR code** — any QR generator works; point it at the app URL, e.g.
-`https://arena.yourdomain.com`. There is no QR generator in this repo on
-purpose. Include a short line on the printout: *"Scan, rate all 10 biscuits,
-submit."*
+**Print the QR code** — any QR generator works; point it at
+`https://samhankin2.github.io/biscuit-arena/`. There is no QR generator in this
+repo on purpose. Include a short line on the printout: *"Scan, rate all 10
+biscuits, submit."*
 
-## 5. API
+## 6. API
 
 | Method | Path                | Purpose                                        |
 | ------ | ------------------- | ---------------------------------------------- |
 | GET    | `/api/config`       | Title, subtitle, the 10 biscuits              |
 | GET    | `/api/results`      | Leaderboard: averages, votes, champion         |
-| GET    | `/api/health`       | Liveness + submission count                    |
+| GET    | `/api/health`       | Liveness, submission count, deployed commit    |
 | GET    | `/api/submissions`  | Raw recent submissions (no auth, by design)    |
 | POST   | `/api/submissions`  | `{ name, comment?, ratings:[{ id, score }] }`  |
 
