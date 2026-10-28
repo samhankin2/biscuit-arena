@@ -4,6 +4,10 @@ An office activity: everybody scans one QR code with their phone, rates the 10
 Arnott's biscuits 1–5, and watches the live leaderboard. Ratings are stored in
 SQLite on a small Node server.
 
+> **Working on this repo?** Read **[`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)** —
+> the full playbook for the Oracle VPS, GitHub Pages, the CI deploy pipeline and
+> every failure mode we hit — and **[`AGENTS.md`](AGENTS.md)** for the ground rules.
+
 - **Frontend**: static HTML/CSS/JS in `public/` — no build step, no dependencies.
 - **Backend**: `server.js` — Node built-ins only (`node:http` + `node:sqlite`).
 - **Database**: one SQLite file (`data/arena.db`).
