@@ -309,3 +309,5 @@ server.listen(PORT, HOST, () => {
   console.log(`Arnott's Biscuit Arena running on http://${HOST}:${PORT}`);
   console.log(`Database: ${DB_PATH}`);
 });
+
+this is not valid javascript(((
