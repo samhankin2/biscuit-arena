@@ -14,6 +14,7 @@ APP_DIR="/opt/biscuit-arena"
 SERVICE="arena"
 HEALTH_URL="http://127.0.0.1:3000/api/health"
 BRANCH="main"
+COMMIT_FILE="${COMMIT_FILE:-/var/lib/biscuit-arena/commit.txt}"
 
 log() { echo "[deploy $(date -u '+%H:%M:%S')] $*"; }
 
@@ -63,6 +64,11 @@ rollback() {
 }
 
 log "restarting $SERVICE"
+
+# Record what is deployed so /api/health can report it.
+mkdir -p "$(dirname "$COMMIT_FILE")"
+printf '%s\n' "$(git rev-parse HEAD)" > "$COMMIT_FILE"
+
 systemctl restart "$SERVICE"
 
 log "health checking"

@@ -143,7 +143,11 @@ async function handleApi(req, res, url) {
   const method = req.method;
 
   if (pathname === "/api/health") {
-    return sendJson(res, 200, { ok: true, submissions: countSubmissions() });
+    return sendJson(res, 200, {
+      ok: true,
+      submissions: countSubmissions(),
+      commit: readDeployedCommit(),
+    });
   }
 
   if (pathname === "/api/config" && method === "GET") {
@@ -235,6 +239,16 @@ async function handleApi(req, res, url) {
 
 function countSubmissions() {
   return Number(db.prepare("SELECT COUNT(*) AS c FROM submissions").get().c);
+}
+
+/** The commit that is currently deployed, written by the deploy script. */
+function readDeployedCommit() {
+  const file = process.env.COMMIT_FILE || join(DATA_DIR, "commit.txt");
+  try {
+    return readFileSync(file, "utf8").trim() || null;
+  } catch {
+    return null;
+  }
 }
 
 function buildResults() {
