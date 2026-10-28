@@ -28,11 +28,19 @@ jobs:
 
       - uses: actions/configure-pages@v5
 
-      # The whole frontend is the public/ folder. Set the API origin in
-      # public/api-config.js before publishing (window.ARENA_API_BASE).
+      # The frontend is the public/ folder. The API origin is injected here from the
+      # repository variable API_BASE_URL (Settings > Secrets and variables > Actions >
+      # Variables > API_BASE_URL), so no file edit is needed to point it at the API.
+      # Leave the variable empty to serve the API from the same origin.
+      - name: Prepare static site
+        run: |
+          mkdir -p _site
+          cp -r public/. _site/
+          printf 'window.ARENA_API_BASE = "%s";\n' '${{ vars.API_BASE_URL }}' > _site/api-config.js
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: public
+          path: _site
 
       - id: deployment
         uses: actions/deploy-pages@v4
