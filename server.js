@@ -90,6 +90,7 @@ const MIME = {
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",
+  ".webp": "image/webp",
   ".ico": "image/x-icon",
   ".webmanifest": "application/manifest+json",
 };

@@ -22,7 +22,7 @@ touching infrastructure — it will save an hour.
 
 ```
 public/            static frontend (no build step, no dependencies)
-public/biscuits/   SVG illustration of each biscuit, referenced from config.json
+public/biscuits/   192px WebP photo of each biscuit, referenced from config.json
 server.js          API + static file server (node:http + node:sqlite, zero deps)
 data/config.json   the 12 biscuits (Family + Cream Favourites), the app title
 data/arena.db      SQLite database (git-ignored)

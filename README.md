@@ -185,8 +185,8 @@ sudo systemctl restart arena   # restart without deploying
 ```
 
 **Change the biscuits** — edit `data/config.json` (names, images, order) and
-push. Each biscuit's `image` is a path relative to the page (the illustrations
-live in `public/biscuits/`); `emoji` is the fallback if it has none. The deploy
+push. Each biscuit's `image` is a path relative to the page (the photos, cropped
+from the packet shots on arnotts.com, live in `public/biscuits/`); `emoji` is the fallback if it has none. The deploy
 workflow restarts the service. Ratings already stored keep working: the biscuit
 ids are the join key. Biscuits removed from the config are hidden from the form
 and leaderboard but their ratings stay in the database.

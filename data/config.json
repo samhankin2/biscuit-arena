@@ -1,17 +1,17 @@
 {
   "title": "Arnott's Biscuit Arena",
   "biscuits": [
-    { "id": "nice", "name": "Nice", "pack": "Family Favourites", "image": "biscuits/nice.svg", "emoji": "🍪" },
-    { "id": "milk-arrowroot", "name": "Milk Arrowroot", "pack": "Family Favourites", "image": "biscuits/milk-arrowroot.svg", "emoji": "🍪" },
-    { "id": "choc-ripple", "name": "Choc Ripple", "pack": "Family Favourites", "image": "biscuits/choc-ripple.svg", "emoji": "🍫" },
-    { "id": "scotch-finger", "name": "Scotch Finger", "pack": "Family Favourites", "image": "biscuits/scotch-finger.svg", "emoji": "🍪" },
-    { "id": "teddy-bear", "name": "Teddy Bear", "pack": "Family Favourites", "image": "biscuits/teddy-bear.svg", "emoji": "🧸" },
-    { "id": "butternut-snap", "name": "Butternut Snap", "pack": "Family Favourites", "image": "biscuits/butternut-snap.svg", "emoji": "🍪" },
-    { "id": "milk-coffee", "name": "Milk Coffee", "pack": "Family Favourites", "image": "biscuits/milk-coffee.svg", "emoji": "☕" },
-    { "id": "orange-slice", "name": "Orange Slice", "pack": "Cream Favourites", "image": "biscuits/orange-slice.svg", "emoji": "🍊" },
-    { "id": "shortbread-cream", "name": "Shortbread Cream", "pack": "Cream Favourites", "image": "biscuits/shortbread-cream.svg", "emoji": "🍪" },
-    { "id": "kingston", "name": "Kingston", "pack": "Cream Favourites", "image": "biscuits/kingston.svg", "emoji": "🍫" },
-    { "id": "monte-carlo", "name": "Monte Carlo", "pack": "Cream Favourites", "image": "biscuits/monte-carlo.svg", "emoji": "🍓" },
-    { "id": "delta-cream", "name": "Delta Cream", "pack": "Cream Favourites", "image": "biscuits/delta-cream.svg", "emoji": "🍫" }
+    { "id": "nice", "name": "Nice", "pack": "Family Favourites", "image": "biscuits/nice.webp", "emoji": "🍪" },
+    { "id": "milk-arrowroot", "name": "Milk Arrowroot", "pack": "Family Favourites", "image": "biscuits/milk-arrowroot.webp", "emoji": "🍪" },
+    { "id": "choc-ripple", "name": "Choc Ripple", "pack": "Family Favourites", "image": "biscuits/choc-ripple.webp", "emoji": "🍫" },
+    { "id": "scotch-finger", "name": "Scotch Finger", "pack": "Family Favourites", "image": "biscuits/scotch-finger.webp", "emoji": "🍪" },
+    { "id": "teddy-bear", "name": "Teddy Bear", "pack": "Family Favourites", "image": "biscuits/teddy-bear.webp", "emoji": "🧸" },
+    { "id": "butternut-snap", "name": "Butternut Snap", "pack": "Family Favourites", "image": "biscuits/butternut-snap.webp", "emoji": "🍪" },
+    { "id": "milk-coffee", "name": "Milk Coffee", "pack": "Family Favourites", "image": "biscuits/milk-coffee.webp", "emoji": "☕" },
+    { "id": "orange-slice", "name": "Orange Slice", "pack": "Cream Favourites", "image": "biscuits/orange-slice.webp", "emoji": "🍊" },
+    { "id": "shortbread-cream", "name": "Shortbread Cream", "pack": "Cream Favourites", "image": "biscuits/shortbread-cream.webp", "emoji": "🍪" },
+    { "id": "kingston", "name": "Kingston", "pack": "Cream Favourites", "image": "biscuits/kingston.webp", "emoji": "🍫" },
+    { "id": "monte-carlo", "name": "Monte Carlo", "pack": "Cream Favourites", "image": "biscuits/monte-carlo.webp", "emoji": "🍓" },
+    { "id": "delta-cream", "name": "Delta Cream", "pack": "Cream Favourites", "image": "biscuits/delta-cream.webp", "emoji": "🍫" }
   ]
 }
