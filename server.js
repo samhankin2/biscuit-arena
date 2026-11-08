@@ -75,6 +75,25 @@ config.biscuits.forEach((b, i) => seedBiscuits.run(b.id, b.name, b.emoji ?? "", 
 (config.stations || []).forEach((s) => seedStations.run(s.code, s.name));
 db.exec("COMMIT");
 
+// One-off wipe of all submissions, triggered from config.json. Set
+// "resetSubmissions" to a new value (e.g. a date) and deploy: on the next start
+// the database is backed up next to itself and every submission is deleted.
+// The value is remembered, so later restarts with the same value do nothing.
+db.exec("CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT)");
+const resetKey = config.resetSubmissions ? String(config.resetSubmissions) : "";
+const lastReset = db.prepare("SELECT value FROM meta WHERE key = 'reset'").get();
+if (resetKey && (!lastReset || lastReset.value !== resetKey)) {
+  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const backup = join(DATA_DIR, `arena-before-reset-${stamp}.db`);
+  db.exec(`VACUUM INTO '${backup.replace(/'/g, "''")}'`);
+  db.exec("BEGIN");
+  const cleared = Number(db.prepare("SELECT COUNT(*) AS c FROM submissions").get().c);
+  db.exec("DELETE FROM ratings; DELETE FROM submissions; DELETE FROM sqlite_sequence WHERE name = 'submissions'");
+  db.prepare("INSERT INTO meta (key, value) VALUES ('reset', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(resetKey);
+  db.exec("COMMIT");
+  console.log(`Reset "${resetKey}": cleared ${cleared} submission(s); backup at ${backup}`);
+}
+
 const allBiscuits = db
   .prepare("SELECT id, name, emoji, image FROM biscuits WHERE active = 1 ORDER BY sort")
   .all();

@@ -1,5 +1,6 @@
 {
   "title": "Arnott's Biscuit Arena",
+  "resetSubmissions": "2026-11-08",
   "biscuits": [
     { "id": "nice", "name": "Nice", "pack": "Family Favourites", "image": "biscuits/nice.webp", "emoji": "🍪" },
     { "id": "milk-arrowroot", "name": "Milk Arrowroot", "pack": "Family Favourites", "image": "biscuits/milk-arrowroot.webp", "emoji": "🍪" },

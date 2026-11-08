@@ -131,15 +131,16 @@
     const rated = state.biscuits.reduce((count, biscuit) => count + (state.ratings.has(biscuit.id) ? 1 : 0), 0);
     const remaining = total - rated;
     const complete = total > 0 && rated === total;
+    const canSubmit = rated > 0;
 
     $("#rating-progress-text").textContent = `Rated ${rated} of ${total}`;
-    $("#rating-progress-note").textContent = complete ? "Done" : rated === 0 ? "" : `${remaining} to go`;
+    $("#rating-progress-note").textContent = complete ? "All done" : rated === 0 ? "" : `${remaining} left (optional)`;
     $("#rating-progressbar").setAttribute("aria-valuemax", String(total));
     $("#rating-progressbar").setAttribute("aria-valuenow", String(rated));
     $("#rating-progress-fill").style.width = total ? `${(rated / total) * 100}%` : "0%";
     $("#dock-progress").textContent = `${rated} / ${total} rated`;
-    $("#dock-message").textContent = complete ? "" : `Rate all ${total} to submit`;
-    elements.submitButton.disabled = !complete || state.submitting;
+    $("#dock-message").textContent = canSubmit ? "" : "Rate at least one to submit";
+    elements.submitButton.disabled = !canSubmit || state.submitting;
   }
 
   function updateRatingCard(biscuitId, animate) {
@@ -255,8 +256,9 @@
     event.preventDefault();
     if (state.submitting || !state.biscuits.length) return;
 
-    const rated = state.biscuits.filter((biscuit) => state.ratings.has(biscuit.id)).length;
-    if (rated !== state.biscuits.length) {
+    // Only the biscuits the person actually rated are sent; skipping some is fine.
+    const ratedBiscuits = state.biscuits.filter((biscuit) => state.ratings.has(biscuit.id));
+    if (!ratedBiscuits.length) {
       updateProgress();
       return;
     }
@@ -266,7 +268,7 @@
     elements.submitLabel.textContent = "Sending…";
     updateProgress();
 
-    const ratings = state.biscuits.map((biscuit) => {
+    const ratings = ratedBiscuits.map((biscuit) => {
       const note = elements.biscuitList.querySelector(`[data-note-id="${CSS.escape(biscuit.id)}"]`);
       return {
         id: biscuit.id,

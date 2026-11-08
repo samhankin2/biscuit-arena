@@ -191,6 +191,12 @@ workflow restarts the service. Ratings already stored keep working: the biscuit
 ids are the join key. Biscuits removed from the config are hidden from the form
 and leaderboard but their ratings stay in the database.
 
+**Clear all submissions** — set `"resetSubmissions"` in `data/config.json` to a
+new value (today's date is a good choice) and push. On restart the server copies
+the database to `/var/lib/biscuit-arena/arena-before-reset-<time>.db`, then
+deletes every submission and rating. It remembers the value, so it only runs
+once per value.
+
 **Back up the results** — the whole database is one file:
 
 ```bash
@@ -207,7 +213,7 @@ sudo systemctl start arena
 
 **Print the QR code** — any QR generator works; point it at
 `https://samhankin2.github.io/biscuit-arena/`. There is no QR generator in this
-repo on purpose. Include a short line on the printout: *"Scan, rate all 12
+repo on purpose. Include a short line on the printout: *"Scan, rate the
 biscuits, submit."*
 
 ## 6. API
