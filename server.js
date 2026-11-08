@@ -54,20 +54,30 @@ db.exec(`
   );
 `);
 
+// Columns added after the first deploy: the live database predates them.
+const biscuitColumns = new Set(db.prepare("PRAGMA table_info(biscuits)").all().map((c) => c.name));
+if (!biscuitColumns.has("image")) db.exec("ALTER TABLE biscuits ADD COLUMN image TEXT");
+if (!biscuitColumns.has("active")) db.exec("ALTER TABLE biscuits ADD COLUMN active INTEGER NOT NULL DEFAULT 1");
+
 const seedBiscuits = db.prepare(
-  "INSERT INTO biscuits (id, name, emoji, sort) VALUES (?, ?, ?, ?) " +
-    "ON CONFLICT(id) DO UPDATE SET name = excluded.name, emoji = excluded.emoji, sort = excluded.sort",
+  "INSERT INTO biscuits (id, name, emoji, image, sort, active) VALUES (?, ?, ?, ?, ?, 1) " +
+    "ON CONFLICT(id) DO UPDATE SET name = excluded.name, emoji = excluded.emoji, " +
+    "image = excluded.image, sort = excluded.sort, active = 1",
 );
 const seedStations = db.prepare(
   "INSERT INTO stations (code, name) VALUES (?, ?) " +
     "ON CONFLICT(code) DO UPDATE SET name = excluded.name",
 );
 db.exec("BEGIN");
-config.biscuits.forEach((b, i) => seedBiscuits.run(b.id, b.name, b.emoji ?? "", i));
+// Biscuits dropped from config.json are retired, not deleted, so their past ratings survive.
+db.exec("UPDATE biscuits SET active = 0");
+config.biscuits.forEach((b, i) => seedBiscuits.run(b.id, b.name, b.emoji ?? "", b.image ?? "", i));
 (config.stations || []).forEach((s) => seedStations.run(s.code, s.name));
 db.exec("COMMIT");
 
-const allBiscuits = db.prepare("SELECT id, name, emoji FROM biscuits ORDER BY sort").all();
+const allBiscuits = db
+  .prepare("SELECT id, name, emoji, image FROM biscuits WHERE active = 1 ORDER BY sort")
+  .all();
 const allStations = db.prepare("SELECT code, name FROM stations").all();
 
 // ---------------------------------------------------------------- helpers
@@ -254,8 +264,9 @@ function readDeployedCommit() {
 function buildResults() {
   const rows = db
     .prepare(
-      `SELECT b.id, b.name, b.emoji, AVG(r.score) AS avg, COUNT(r.score) AS votes
+      `SELECT b.id, b.name, b.emoji, b.image, AVG(r.score) AS avg, COUNT(r.score) AS votes
        FROM biscuits b LEFT JOIN ratings r ON r.biscuit_id = b.id
+       WHERE b.active = 1
        GROUP BY b.id ORDER BY b.sort`,
     )
     .all();
@@ -264,6 +275,7 @@ function buildResults() {
     id: r.id,
     name: r.name,
     emoji: r.emoji,
+    image: r.image,
     avg: r.avg === null ? 0 : Math.round(Number(r.avg) * 100) / 100,
     votes: Number(r.votes || 0),
   }));

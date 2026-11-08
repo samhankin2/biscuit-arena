@@ -4,7 +4,7 @@ Working notes for any agent (or human) picking up this repository.
 
 ## What this is
 
-"Arnott's Biscuit Arena" — an office activity. Staff open one web page, rate 10
+"Arnott's Biscuit Arena" — an office activity. Staff open one web page, rate 12
 Arnott's biscuits from 1–5, and submit. Results go to a SQLite database on a
 free Oracle Cloud VPS and appear on a live leaderboard. The QR code printed for
 the event points at the GitHub Pages URL; the phone's own Camera app scans it.
@@ -22,8 +22,9 @@ touching infrastructure — it will save an hour.
 
 ```
 public/            static frontend (no build step, no dependencies)
+public/biscuits/   SVG illustration of each biscuit, referenced from config.json
 server.js          API + static file server (node:http + node:sqlite, zero deps)
-data/config.json   the 10 biscuits, the app title
+data/config.json   the 12 biscuits (Family + Cream Favourites), the app title
 data/arena.db      SQLite database (git-ignored)
 deploy/            VPS provisioning, bootstrap, deploy script
 docs/DEPLOYMENT.md the playbook

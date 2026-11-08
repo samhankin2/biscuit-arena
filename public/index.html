@@ -14,7 +14,7 @@
 
     <header class="site-header">
       <button class="brand" id="brand-home" type="button" aria-label="Biscuit Arena home">
-        <span class="brand-mark" aria-hidden="true">🍪</span>
+        <span class="brand-mark" aria-hidden="true"><img src="biscuits/milk-arrowroot.svg" alt="" /></span>
         <span class="brand-name">Biscuit <strong>Arena</strong></span>
       </button>
     </header>
@@ -25,13 +25,13 @@
           <h1 id="welcome-title">Arnott's<br />Biscuit Arena</h1>
 
           <div class="arena-ticket" aria-hidden="true">
-            <span class="ticket-emoji ticket-emoji-left">🍫</span>
+            <img class="ticket-emoji ticket-emoji-left" src="biscuits/choc-ripple.svg" alt="" />
             <div class="cookie-medal">
               <span class="medal-ring"></span>
-              <span class="medal-cookie">🍪</span>
+              <img class="medal-cookie" src="biscuits/monte-carlo.svg" alt="" />
               <span class="medal-star">★</span>
             </div>
-            <span class="ticket-emoji ticket-emoji-right">🍋</span>
+            <img class="ticket-emoji ticket-emoji-right" src="biscuits/orange-slice.svg" alt="" />
           </div>
         </div>
 
@@ -70,10 +70,10 @@
 
         <div class="rating-progress" aria-live="polite">
           <div class="progress-copy">
-            <strong id="rating-progress-text">Rated 0 of 10</strong>
+            <strong id="rating-progress-text">Rated 0 of 12</strong>
             <span id="rating-progress-note"></span>
           </div>
-          <div class="progress-track" role="progressbar" aria-label="Biscuits rated" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="rating-progressbar">
+          <div class="progress-track" role="progressbar" aria-label="Biscuits rated" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" id="rating-progressbar">
             <span id="rating-progress-fill"></span>
           </div>
         </div>
@@ -85,7 +85,7 @@
         </div>
 
         <div class="loading-state" id="rating-loading" aria-live="polite" hidden>
-          <span class="loading-cookie" aria-hidden="true">🍪</span>
+          <img class="loading-cookie" src="biscuits/butternut-snap.svg" alt="" />
           <p>Loading…</p>
         </div>
 
@@ -100,8 +100,8 @@
           <p class="form-error" id="submit-error" role="alert" hidden></p>
           <div class="submit-dock" id="submit-dock">
             <div class="dock-summary">
-              <span id="dock-progress">0 / 10 rated</span>
-              <span id="dock-message">Rate all 10 to submit</span>
+              <span id="dock-progress">0 / 12 rated</span>
+              <span id="dock-message">Rate all 12 to submit</span>
             </div>
             <button class="button button-primary" id="submit-ratings" type="submit" disabled>
               <span id="submit-label">Submit</span>
@@ -151,7 +151,7 @@
         </div>
 
         <div class="loading-state" id="results-loading" aria-live="polite">
-          <span class="loading-cookie" aria-hidden="true">🍪</span>
+          <img class="loading-cookie" src="biscuits/butternut-snap.svg" alt="" />
           <p>Loading…</p>
         </div>
         <div class="form-error" id="results-error" role="alert" hidden>
@@ -162,7 +162,7 @@
 
         <div class="leader-card" id="leader-card" hidden>
           <div class="leader-crown" aria-hidden="true">♛</div>
-          <div class="leader-emoji" id="leader-emoji" aria-hidden="true">🍪</div>
+          <div class="leader-emoji" id="leader-emoji" aria-hidden="true"></div>
           <div class="leader-copy">
             <span>Champion</span>
             <strong id="leader-name"></strong>
@@ -173,7 +173,7 @@
 
         <div class="leaderboard" id="leaderboard" aria-live="polite"></div>
         <div class="empty-results" id="empty-results" hidden>
-          <span aria-hidden="true">🍪</span>
+          <img class="empty-biscuit" src="biscuits/teddy-bear.svg" alt="" aria-hidden="true" />
           <p>No scores yet.</p>
         </div>
 

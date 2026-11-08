@@ -138,7 +138,7 @@
     $("#rating-progressbar").setAttribute("aria-valuenow", String(rated));
     $("#rating-progress-fill").style.width = total ? `${(rated / total) * 100}%` : "0%";
     $("#dock-progress").textContent = `${rated} / ${total} rated`;
-    $("#dock-message").textContent = complete ? "" : "Rate all 10 to submit";
+    $("#dock-message").textContent = complete ? "" : `Rate all ${total} to submit`;
     elements.submitButton.disabled = !complete || state.submitting;
   }
 
@@ -168,11 +168,18 @@
     if (biscuit) card.setAttribute("aria-label", `${biscuit.name}, ${score ? `rated ${score} out of 5` : "not rated"}`);
   }
 
+  /** The biscuit's illustration (path relative to the page), falling back to its emoji. */
+  function biscuitArt(biscuit) {
+    if (biscuit && biscuit.image) {
+      return `<img src="${escapeHTML(biscuit.image)}" alt="" loading="lazy" decoding="async" />`;
+    }
+    return escapeHTML((biscuit && biscuit.emoji) || "🍪");
+  }
+
   function renderBiscuits() {
     elements.biscuitList.innerHTML = state.biscuits.map((biscuit) => {
       const id = escapeHTML(biscuit.id);
       const name = escapeHTML(biscuit.name);
-      const emoji = escapeHTML(biscuit.emoji || "🍪");
       const stars = [1, 2, 3, 4, 5].map((score) => `
         <button class="star-button" type="button" data-biscuit-id="${id}" data-score="${score}"
           aria-label="Rate ${name} ${score} out of 5" aria-pressed="false">☆</button>
@@ -181,7 +188,7 @@
       return `
         <article class="biscuit-card" data-biscuit-id="${id}">
           <div class="biscuit-heading">
-            <span class="biscuit-emoji" aria-hidden="true">${emoji}</span>
+            <span class="biscuit-emoji" aria-hidden="true">${biscuitArt(biscuit)}</span>
             <div class="biscuit-title">
               <h3>${name}</h3>
               <span class="rating-hint">Tap to rate</span>
@@ -311,7 +318,7 @@
     elements.leaderCard.hidden = !leader;
 
     if (leader) {
-      $("#leader-emoji").textContent = leader.emoji || "🍪";
+      $("#leader-emoji").innerHTML = biscuitArt(leader);
       $("#leader-name").textContent = leader.name;
       $("#leader-votes").textContent = formatVotes(Number(leader.votes));
       $("#leader-average").textContent = Number(leader.avg).toFixed(1);
@@ -325,7 +332,7 @@
       return `
         <article class="result-row${isLeader ? " is-leader" : ""}">
           <span class="result-rank">${index + 1}</span>
-          <span class="result-emoji" aria-hidden="true">${escapeHTML(biscuit.emoji || "🍪")}</span>
+          <span class="result-emoji" aria-hidden="true">${biscuitArt(biscuit)}</span>
           <strong class="result-name">${escapeHTML(biscuit.name)}</strong>
           <span class="result-score">${average.toFixed(1)}<small> / 5</small></span>
           <div class="result-bar" aria-hidden="true"><span style="width: ${width}%"></span></div>

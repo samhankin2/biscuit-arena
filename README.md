@@ -1,6 +1,6 @@
 # Arnott's Biscuit Arena
 
-An office activity: everybody scans one QR code with their phone, rates the 10
+An office activity: everybody scans one QR code with their phone, rates the 12
 Arnott's biscuits 1–5, and watches the live leaderboard. Ratings are stored in
 SQLite on a small Node server.
 
@@ -15,7 +15,7 @@ SQLite on a small Node server.
 ```
 public/            static frontend (also what GitHub Pages publishes)
 server.js          API + static file server
-data/config.json   the 10 biscuits, the title, the stations
+data/config.json   the 12 biscuits, the title, the stations
 data/arena.db      the SQLite database (git-ignored)
 deploy/            VPS install script, systemd unit, Caddyfile
 ```
@@ -184,9 +184,12 @@ journalctl -u arena -f         # live logs
 sudo systemctl restart arena   # restart without deploying
 ```
 
-**Change the biscuits** — edit `data/config.json` (names, emoji, order) and
-push. The deploy workflow restarts the service. Ratings already stored keep
-working: the biscuit ids are the join key.
+**Change the biscuits** — edit `data/config.json` (names, images, order) and
+push. Each biscuit's `image` is a path relative to the page (the illustrations
+live in `public/biscuits/`); `emoji` is the fallback if it has none. The deploy
+workflow restarts the service. Ratings already stored keep working: the biscuit
+ids are the join key. Biscuits removed from the config are hidden from the form
+and leaderboard but their ratings stay in the database.
 
 **Back up the results** — the whole database is one file:
 
@@ -204,14 +207,14 @@ sudo systemctl start arena
 
 **Print the QR code** — any QR generator works; point it at
 `https://samhankin2.github.io/biscuit-arena/`. There is no QR generator in this
-repo on purpose. Include a short line on the printout: *"Scan, rate all 10
+repo on purpose. Include a short line on the printout: *"Scan, rate all 12
 biscuits, submit."*
 
 ## 6. API
 
 | Method | Path                | Purpose                                        |
 | ------ | ------------------- | ---------------------------------------------- |
-| GET    | `/api/config`       | Title, subtitle, the 10 biscuits              |
+| GET    | `/api/config`       | Title, subtitle, the 12 biscuits              |
 | GET    | `/api/results`      | Leaderboard: averages, votes, champion         |
 | GET    | `/api/health`       | Liveness, submission count, deployed commit    |
 | GET    | `/api/submissions`  | Raw recent submissions (no auth, by design)    |

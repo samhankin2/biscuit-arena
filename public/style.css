@@ -142,6 +142,8 @@ button:disabled {
   transform: rotate(-7deg);
 }
 
+.brand-mark img { width: 31px; height: 31px; }
+
 .brand-name {
   font-size: 16px;
   font-weight: 650;
@@ -259,6 +261,8 @@ h3 {
 }
 
 .medal-cookie {
+  width: 76px;
+  height: 76px;
   font-size: 70px;
   line-height: 1;
   filter: drop-shadow(0 7px 5px rgba(95, 55, 27, 0.14));
@@ -283,6 +287,8 @@ h3 {
 
 .ticket-emoji {
   position: absolute;
+  width: 44px;
+  height: 44px;
   font-size: 35px;
   filter: drop-shadow(0 5px 4px rgba(95, 55, 27, 0.12));
 }
@@ -570,13 +576,25 @@ input[aria-invalid="true"] {
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  width: 43px;
-  height: 43px;
+  width: 56px;
+  height: 56px;
   border: 1px solid #eee0cb;
   border-radius: 14px;
   background: #f6ead8;
   font-size: 25px;
+  overflow: hidden;
 }
+
+.biscuit-emoji img,
+.leader-emoji img,
+.result-emoji img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.biscuit-emoji img { padding: 2px; }
 
 .biscuit-title {
   min-width: 0;
@@ -722,7 +740,8 @@ div.form-error .button {
 
 .loading-cookie {
   display: inline-block;
-  font-size: 42px;
+  width: 48px;
+  height: 48px;
   animation: cookie-bob 1.3s ease-in-out infinite;
 }
 
@@ -931,6 +950,7 @@ div.form-error .button {
   border-radius: 17px;
   background: rgba(255, 253, 245, 0.56);
   font-size: 32px;
+  padding: 4px;
 }
 
 .leader-copy {
@@ -1009,6 +1029,9 @@ div.form-error .button {
 
 .result-emoji {
   grid-area: emoji;
+  width: 34px;
+  height: 34px;
+  justify-self: center;
   font-size: 28px;
   text-align: center;
 }
@@ -1067,7 +1090,7 @@ div.form-error .button {
   text-align: center;
 }
 
-.empty-results > span { font-size: 44px; }
+.empty-biscuit { display: block; width: 56px; height: 56px; margin: 0 auto 8px; }
 .empty-results p { margin: 0; color: var(--muted); font-size: 14px; }
 
 .results-rate-button {
