@@ -142,7 +142,6 @@ button:disabled {
   transform: rotate(-7deg);
 }
 
-.brand-mark img { width: 31px; height: 31px; border-radius: 9px; object-fit: cover; }
 
 .brand-name {
   font-size: 16px;
@@ -261,10 +260,9 @@ h3 {
 }
 
 .medal-cookie {
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  object-fit: cover;
+  position: relative;
+  width: 132px;
+  height: auto;
   font-size: 70px;
   line-height: 1;
   filter: drop-shadow(0 7px 5px rgba(95, 55, 27, 0.14));
@@ -289,22 +287,20 @@ h3 {
 
 .ticket-emoji {
   position: absolute;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  object-fit: cover;
+  width: 74px;
+  height: auto;
   font-size: 35px;
   filter: drop-shadow(0 5px 4px rgba(95, 55, 27, 0.12));
 }
 
 .ticket-emoji-left {
-  left: 14%;
+  left: 6%;
   top: 30px;
   transform: rotate(-15deg);
 }
 
 .ticket-emoji-right {
-  right: 14%;
+  right: 6%;
   bottom: 31px;
   transform: rotate(14deg);
 }
@@ -580,13 +576,9 @@ input[aria-invalid="true"] {
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  width: 56px;
+  width: 124px;
   height: 56px;
-  border: 1px solid #eee0cb;
-  border-radius: 14px;
-  background: #f6ead8;
   font-size: 25px;
-  overflow: hidden;
 }
 
 .biscuit-emoji img,
@@ -595,11 +587,9 @@ input[aria-invalid="true"] {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 2px rgba(95, 55, 27, 0.16));
 }
-
-.leader-emoji img { border-radius: 13px; }
-.result-emoji img { border-radius: 9px; }
 
 .biscuit-title {
   min-width: 0;
@@ -745,9 +735,8 @@ div.form-error .button {
 
 .loading-cookie {
   display: inline-block;
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
+  width: 110px;
+  height: auto;
   animation: cookie-bob 1.3s ease-in-out infinite;
 }
 
@@ -950,11 +939,9 @@ div.form-error .button {
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  width: 54px;
+  width: 104px;
   height: 54px;
   margin-top: 6px;
-  border-radius: 17px;
-  background: rgba(255, 253, 245, 0.56);
   font-size: 32px;
 }
 
@@ -1007,7 +994,7 @@ div.form-error .button {
 .result-row {
   padding: 14px 15px;
   display: grid;
-  grid-template-columns: 24px 40px minmax(0, 1fr) auto;
+  grid-template-columns: 24px 72px minmax(0, 1fr) auto;
   grid-template-areas:
     "rank emoji name score"
     "rank emoji bar votes";
@@ -1034,8 +1021,8 @@ div.form-error .button {
 
 .result-emoji {
   grid-area: emoji;
-  width: 34px;
-  height: 34px;
+  width: 100%;
+  height: 40px;
   justify-self: center;
   font-size: 28px;
   text-align: center;
@@ -1095,7 +1082,7 @@ div.form-error .button {
   text-align: center;
 }
 
-.empty-biscuit { display: block; width: 56px; height: 56px; margin: 0 auto 8px; border-radius: 16px; }
+.empty-biscuit { display: block; width: 130px; height: auto; margin: 0 auto 10px; }
 .empty-results p { margin: 0; color: var(--muted); font-size: 14px; }
 
 .results-rate-button {
@@ -1148,12 +1135,12 @@ div.form-error .button {
   .app-shell,
   .site-header { width: calc(100% - 24px); }
   .entry-card { padding: 17px; }
-  .ticket-emoji-left { left: 9%; }
-  .ticket-emoji-right { right: 9%; }
+  .ticket-emoji-left { left: 3%; }
+  .ticket-emoji-right { right: 3%; }
   .biscuit-card { padding: 14px 12px; }
   .star-button { min-width: 38px; font-size: 29px; }
   .dock-summary { font-size: 10px; }
-  .result-row { grid-template-columns: 20px 34px minmax(0, 1fr) auto; padding: 13px 11px; column-gap: 7px; }
+  .result-row { grid-template-columns: 18px 60px minmax(0, 1fr) auto; padding: 13px 11px; column-gap: 7px; }
 }
 
 @media (min-width: 600px) {
