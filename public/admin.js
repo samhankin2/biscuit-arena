@@ -97,8 +97,16 @@
       return;
     }
 
+    // Same name on different devices: worth a look (could be two people, could be a repeat voter).
+    const nameCounts = new Map();
+    for (const x of data.submissions) {
+      const key = String(x.name || "").trim().toLowerCase();
+      nameCounts.set(key, (nameCounts.get(key) || 0) + 1);
+    }
+
     $("#admin-list").innerHTML = subs
       .map((s) => {
+        const dupes = nameCounts.get(String(s.name || "").trim().toLowerCase()) || 0;
         const ratings = s.ratings
           .slice()
           .sort((a, z) => data.biscuits.findIndex((b) => b.id === a.biscuit_id) - data.biscuits.findIndex((b) => b.id === z.biscuit_id))
@@ -114,12 +122,14 @@
         return `<details class="admin-sub" data-id="${s.id}"${open.has(String(s.id)) ? " open" : ""}>
           <summary>
             <span class="admin-sub-name">${esc(s.name)}</span>
-            <span class="admin-sub-meta">#${s.id} · ${esc(formatDate(s.created_at))} · ${s.ratings.length} rated</span>
+            <span class="admin-sub-meta">#${s.id} · ${esc(formatDate(s.created_at))}${s.updated_at ? ` · edited ${esc(formatDate(s.updated_at))}` : ""} · ${s.ratings.length} rated</span>
+            ${dupes > 1 ? `<span class="admin-flag" title="Another submission uses this name">Same name ×${dupes}</span>` : ""}
             <span class="admin-sub-avg">${s.ratings.length ? avg(s.ratings).toFixed(2) : "–"} ★</span>
           </summary>
           <div class="admin-sub-body">
             ${s.comment ? `<p class="admin-sub-comment">“${esc(s.comment)}”</p>` : ""}
             ${s.email ? `<p class="admin-sub-meta">${esc(s.email)}</p>` : ""}
+            <p class="admin-sub-meta">Device: ${s.device_id ? esc(s.device_id.slice(0, 8)) : "unknown (before device tracking)"}</p>
             ${ratings ? `<div class="admin-table-wrap"><table class="admin-table"><tbody>${ratings}</tbody></table></div>` : `<p class="admin-sub-meta">No ratings left.</p>`}
             <button class="admin-delete admin-delete-all" type="button" data-action="del-sub" data-id="${s.id}">Delete whole submission</button>
           </div>

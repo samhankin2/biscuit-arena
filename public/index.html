@@ -51,8 +51,12 @@
             <p class="field-error" id="name-error" role="alert" hidden></p>
           </div>
 
+          <p class="field-hint returning-note" id="returning-note" hidden>
+            You’ve already rated from this phone. You can change your scores.
+          </p>
+
           <button class="button button-primary start-button" id="start-judging" type="button">
-            Start
+            <span id="start-label">Start</span>
             <span class="button-arrow" aria-hidden="true">→</span>
           </button>
         </div>
@@ -120,6 +124,7 @@
           <div class="success-medal">✓</div>
         </div>
         <h2 id="success-title" tabindex="-1"><span id="success-name">champion</span></h2>
+        <p class="success-updated" id="success-updated" hidden>Scores updated</p>
 
         <div class="average-card">
           <span>Average</span>
@@ -129,7 +134,7 @@
 
         <div class="success-actions">
           <button class="button button-primary" id="success-results" type="button">Leaderboard <span aria-hidden="true">→</span></button>
-          <button class="button button-secondary" id="rate-again" type="button">Rate again</button>
+          <button class="button button-secondary" id="edit-scores" type="button">Change my scores</button>
         </div>
         <button class="text-button" id="success-home" type="button">Back</button>
       </section>
@@ -177,7 +182,7 @@
           <p>No scores yet.</p>
         </div>
 
-        <button class="button button-primary results-rate-button" id="results-rate" type="button">Rate <span aria-hidden="true">→</span></button>
+        <button class="button button-primary results-rate-button" id="results-rate" type="button"><span id="results-rate-label">Rate</span> <span aria-hidden="true">→</span></button>
         <p class="results-updated" id="results-updated" aria-live="polite"></p>
       </section>
     </main>

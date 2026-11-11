@@ -4,6 +4,7 @@
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => Array.from(document.querySelectorAll(selector));
   const STORAGE_KEY = "biscuit-arena-participant-name";
+  const DEVICE_KEY = "biscuit-arena-device-id";
   // Empty when the frontend is served by the API itself; set in api-config.js when hosted apart.
   const API_BASE = String(window.ARENA_API_BASE || "").replace(/\/+$/, "");
 
@@ -15,6 +16,10 @@
     currentScreen: "welcome",
     submitting: false,
     resultsRequest: 0,
+    deviceId: "",
+    // This device's earlier submission, if any — a new submit replaces it.
+    mine: null,
+    mineRequest: null,
   };
 
   const elements = {
@@ -76,6 +81,44 @@
     } catch (_) {
       // The app still works when storage is blocked or full.
     }
+  }
+
+  /** A random ID kept in this browser so one device = one submission. */
+  function getDeviceId() {
+    let id = "";
+    try {
+      id = localStorage.getItem(DEVICE_KEY) || "";
+    } catch (_) {}
+    if (!/^[A-Za-z0-9-]{8,64}$/.test(id)) {
+      id = window.crypto && crypto.randomUUID
+        ? crypto.randomUUID()
+        : Array.from({ length: 4 }, () => Math.random().toString(36).slice(2, 10)).join("-");
+      try {
+        localStorage.setItem(DEVICE_KEY, id);
+      } catch (_) {
+        // Without storage the ID only lasts for this page load.
+      }
+    }
+    return id;
+  }
+
+  function loadMine() {
+    state.mineRequest = api(`/api/my-submission?device=${encodeURIComponent(state.deviceId)}`)
+      .then((data) => {
+        state.mine = data.submission || null;
+        applyMine();
+      })
+      .catch(() => {});
+    return state.mineRequest;
+  }
+
+  /** Switch the copy between "first time" and "you've already rated". */
+  function applyMine() {
+    const returning = Boolean(state.mine);
+    $("#start-label").textContent = returning ? "Edit my scores" : "Start";
+    $("#returning-note").hidden = !returning;
+    $("#results-rate-label").textContent = returning ? "Edit my scores" : "Rate";
+    if (returning && !elements.name.value.trim()) elements.name.value = state.mine.name;
   }
 
   function requireName() {
@@ -222,7 +265,9 @@
       // The biscuit list comes from /api/config, loaded once at startup and reused.
       if (!state.biscuits.length) await loadConfig();
       if (!state.biscuits.length) throw new Error("The judging card came back empty. Please try again.");
+      if (state.mineRequest) await state.mineRequest;
       renderBiscuits();
+      prefillMine();
       elements.ratingLoading.hidden = true;
       elements.ratingsForm.hidden = false;
     } catch (error) {
@@ -235,6 +280,23 @@
           ? "Check your connection and try again."
           : message;
     }
+  }
+
+  /** Put this device's previous scores back on the card so they can be tweaked. */
+  function prefillMine() {
+    const editing = Boolean(state.mine);
+    $("#rating-title").textContent = editing ? "Edit your scores" : "Rate the biscuits";
+    elements.submitLabel.textContent = editing ? "Update" : "Submit";
+    if (!editing) return;
+    $("#overall-comment").value = state.mine.comment || "";
+    for (const r of state.mine.ratings || []) {
+      if (!state.biscuits.some((b) => b.id === r.biscuit_id)) continue;
+      state.ratings.set(r.biscuit_id, r.score);
+      const note = elements.biscuitList.querySelector(`[data-note-id="${CSS.escape(r.biscuit_id)}"]`);
+      if (note) note.value = r.comment || "";
+      updateRatingCard(r.biscuit_id, false);
+    }
+    updateProgress();
   }
 
   function handleStarClick(event) {
@@ -280,10 +342,19 @@
       name: state.name,
       comment: $("#overall-comment").value.trim(),
       ratings,
+      deviceId: state.deviceId,
     };
 
     try {
-      await api("/api/submissions", { method: "POST", body: JSON.stringify(payload) });
+      const result = await api("/api/submissions", { method: "POST", body: JSON.stringify(payload) });
+      state.mine = {
+        id: result.id,
+        name: payload.name,
+        comment: payload.comment,
+        ratings: ratings.map((r) => ({ biscuit_id: r.id, score: r.score, comment: r.comment })),
+      };
+      applyMine();
+      $("#success-updated").hidden = !result.updated;
       const average = ratings.reduce((sum, rating) => sum + rating.score, 0) / ratings.length;
       $("#success-name").textContent = state.name;
       $("#success-average").textContent = average.toFixed(1);
@@ -295,7 +366,7 @@
       elements.submitError.focus();
     } finally {
       state.submitting = false;
-      elements.submitLabel.textContent = "Submit";
+      elements.submitLabel.textContent = state.mine ? "Update" : "Submit";
       updateProgress();
     }
   }
@@ -401,7 +472,7 @@
     elements.biscuitList.addEventListener("click", handleStarClick);
     elements.ratingsForm.addEventListener("submit", submitRatings);
 
-    $("#rate-again").addEventListener("click", () => startRating());
+    $("#edit-scores").addEventListener("click", () => startRating());
     $("#success-results").addEventListener("click", loadResults);
     $("#success-home").addEventListener("click", goHome);
 
@@ -426,7 +497,9 @@
     } catch (_) {
       // Storage is optional.
     }
+    state.deviceId = getDeviceId();
     bindEvents();
+    loadMine();
     // Load the biscuits once. If this fails, the static welcome copy stands in and
     // startRating() retries the request and shows its own error state.
     loadConfig().catch(() => {});

@@ -1160,3 +1160,7 @@ div.form-error .button {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Returning device */
+.returning-note { margin: 12px 0 0; }
+.success-updated { margin: -6px 0 12px; color: var(--muted); font-size: 14px; font-weight: 700; text-align: center; }

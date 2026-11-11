@@ -76,3 +76,11 @@
 .admin-delete:hover { background: #fde4dd; }
 .admin-delete-all { margin-top: 12px; }
 .admin-empty { color: var(--muted); text-align: center; padding: 24px; }
+.admin-flag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: #7a4b00;
+  background: #fbe7b5;
+  font-size: 12px;
+  font-weight: 800;
+}
