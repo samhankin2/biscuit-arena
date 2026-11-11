@@ -1,0 +1,78 @@
+/* Admin panel — layered on top of style.css. */
+.admin-shell { max-width: 820px; }
+.brand { text-decoration: none; color: inherit; }
+.admin-wide { width: 100%; margin-top: 18px; }
+.admin-small { min-height: 40px; padding: 8px 14px; font-size: 14px; }
+
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.admin-toolbar h2 { margin: 0; }
+.admin-toolbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+.admin-stats {
+  margin: 16px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+.admin-stats div {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper);
+}
+.admin-stats strong { display: block; font-size: 24px; }
+.admin-stats span { color: var(--muted); font-size: 13px; }
+
+.admin-subhead { margin: 24px 0 10px; font-size: 16px; }
+
+.admin-table-wrap { overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.admin-table th,
+.admin-table td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+.admin-table th { color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.admin-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.admin-sub {
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--paper);
+  overflow: hidden;
+}
+.admin-sub summary {
+  padding: 12px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  cursor: pointer;
+  list-style: none;
+}
+.admin-sub summary::-webkit-details-marker { display: none; }
+.admin-sub summary::before { content: "▸"; color: var(--muted); }
+.admin-sub[open] summary::before { content: "▾"; }
+.admin-sub-name { font-weight: 800; }
+.admin-sub-meta { color: var(--muted); font-size: 13px; }
+.admin-sub-avg { margin-left: auto; font-weight: 800; color: var(--caramel); }
+.admin-sub-body { padding: 0 14px 14px; }
+.admin-sub-comment { margin: 4px 0 10px; padding: 10px 12px; border-radius: 12px; background: var(--cream); font-size: 14px; }
+
+.admin-delete {
+  min-height: 32px;
+  padding: 4px 10px;
+  border: 1px solid #e7bcb4;
+  border-radius: 10px;
+  color: var(--error);
+  background: #fff3ef;
+  font-size: 13px;
+  font-weight: 800;
+}
+.admin-delete:hover { background: #fde4dd; }
+.admin-delete-all { margin-top: 12px; }
+.admin-empty { color: var(--muted); text-align: center; padding: 24px; }

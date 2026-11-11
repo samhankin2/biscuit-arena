@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7efe2" />
+    <meta name="robots" content="noindex" />
+    <title>Arena Admin</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <div class="page-texture" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Biscuit Arena home">
+        <span class="brand-mark" aria-hidden="true">🍪</span>
+        <span class="brand-name">Biscuit <strong>Arena</strong> · Admin</span>
+      </a>
+    </header>
+
+    <main class="app-shell admin-shell">
+      <section id="login-screen">
+        <h2>Admin</h2>
+        <form class="entry-card" id="login-form">
+          <div class="field-block">
+            <label for="admin-password">Password</label>
+            <input id="admin-password" type="password" autocomplete="current-password" required />
+            <p class="field-error" id="login-error" role="alert" hidden></p>
+          </div>
+          <button class="button button-primary admin-wide" type="submit">Log in <span class="button-arrow" aria-hidden="true">→</span></button>
+        </form>
+      </section>
+
+      <section id="admin-screen" hidden>
+        <div class="admin-toolbar">
+          <h2>Ratings</h2>
+          <div class="admin-toolbar-actions">
+            <button class="button button-secondary admin-small" id="admin-refresh" type="button">↻ Refresh</button>
+            <button class="button button-secondary admin-small" id="admin-export" type="button">Export CSV</button>
+            <button class="text-button" id="admin-logout" type="button">Log out</button>
+          </div>
+        </div>
+
+        <div class="admin-stats" id="admin-stats"></div>
+
+        <h3 class="admin-subhead">Biscuit averages</h3>
+        <div class="admin-table-wrap"><table class="admin-table" id="admin-averages"></table></div>
+
+        <h3 class="admin-subhead">Submissions</h3>
+        <input id="admin-filter" type="search" placeholder="Filter by name or comment…" />
+        <p class="form-error" id="admin-error" role="alert" hidden></p>
+        <div id="admin-list"></div>
+      </section>
+    </main>
+
+    <script src="api-config.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>

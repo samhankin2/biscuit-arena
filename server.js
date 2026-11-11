@@ -17,6 +17,8 @@ const PUBLIC_DIR = resolve(__dirname, "public");
 const CONFIG_DIR = resolve(process.env.CONFIG_DIR || join(__dirname, "data"));
 const DATA_DIR = resolve(process.env.DATA_DIR || join(__dirname, "data"));
 const DB_PATH = join(DATA_DIR, "arena.db");
+// Light-touch gate for the admin panel — this is a fun office event, not a bank.
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "shinebiscuitcomp";
 
 mkdirSync(DATA_DIR, { recursive: true });
 
@@ -253,6 +255,10 @@ async function handleApi(req, res, url) {
     return sendJson(res, 201, { ok: true, id: submissionId, ratings: clean.length });
   }
 
+  if (pathname.startsWith("/api/admin/")) {
+    return handleAdmin(req, res, pathname, method);
+  }
+
   if (pathname === "/api/results" && method === "GET") {
     return sendJson(res, 200, buildResults());
   }
@@ -265,6 +271,62 @@ async function handleApi(req, res, url) {
   }
 
   return sendJson(res, 404, { ok: false, error: "Unknown endpoint" });
+}
+
+// ---------------------------------------------------------------- admin
+function handleAdmin(req, res, pathname, method) {
+  if (req.headers["x-admin-password"] !== ADMIN_PASSWORD) {
+    return sendJson(res, 401, { ok: false, error: "Wrong password" });
+  }
+
+  // GET /api/admin/submissions — every submission with every rating.
+  if (pathname === "/api/admin/submissions" && method === "GET") {
+    const subs = db
+      .prepare("SELECT id, code, name, email, comment, created_at FROM submissions ORDER BY id DESC")
+      .all();
+    const ratings = db
+      .prepare("SELECT submission_id, biscuit_id, score, comment FROM ratings")
+      .all();
+    const bySub = new Map();
+    for (const r of ratings) {
+      if (!bySub.has(r.submission_id)) bySub.set(r.submission_id, []);
+      bySub.get(r.submission_id).push({ biscuit_id: r.biscuit_id, score: r.score, comment: r.comment });
+    }
+    return sendJson(res, 200, {
+      ok: true,
+      biscuits: allBiscuits,
+      submissions: subs.map((s) => ({ ...s, ratings: bySub.get(s.id) || [] })),
+    });
+  }
+
+  // DELETE /api/admin/submissions/:id — remove a whole submission and its ratings.
+  let m = pathname.match(/^\/api\/admin\/submissions\/(\d+)$/);
+  if (m && method === "DELETE") {
+    const id = Number(m[1]);
+    db.exec("BEGIN");
+    try {
+      db.prepare("DELETE FROM ratings WHERE submission_id = ?").run(id);
+      const info = db.prepare("DELETE FROM submissions WHERE id = ?").run(id);
+      db.exec("COMMIT");
+      if (!info.changes) return sendJson(res, 404, { ok: false, error: "No such submission" });
+    } catch (err) {
+      db.exec("ROLLBACK");
+      throw err;
+    }
+    return sendJson(res, 200, { ok: true, deleted: id });
+  }
+
+  // DELETE /api/admin/submissions/:id/ratings/:biscuitId — remove one biscuit's score.
+  m = pathname.match(/^\/api\/admin\/submissions\/(\d+)\/ratings\/([A-Za-z0-9_-]+)$/);
+  if (m && method === "DELETE") {
+    const info = db
+      .prepare("DELETE FROM ratings WHERE submission_id = ? AND biscuit_id = ?")
+      .run(Number(m[1]), m[2]);
+    if (!info.changes) return sendJson(res, 404, { ok: false, error: "No such rating" });
+    return sendJson(res, 200, { ok: true });
+  }
+
+  return sendJson(res, 404, { ok: false, error: "Unknown admin endpoint" });
 }
 
 function countSubmissions() {
@@ -332,8 +394,8 @@ const server = createServer(async (req, res) => {
   // The frontend may be hosted separately (e.g. GitHub Pages) and call this API cross-origin.
   res.setHeader("access-control-allow-origin", req.headers.origin || "*");
   res.setHeader("vary", "Origin");
-  res.setHeader("access-control-allow-methods", "GET, POST, OPTIONS");
-  res.setHeader("access-control-allow-headers", "content-type");
+  res.setHeader("access-control-allow-methods", "GET, POST, DELETE, OPTIONS");
+  res.setHeader("access-control-allow-headers", "content-type, x-admin-password");
 
   try {
     if (req.method === "OPTIONS") {
