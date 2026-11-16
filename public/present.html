@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#f7efe2" />
+    <title>Biscuit Arena Results</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,500&display=swap"
+    />
+    <link rel="stylesheet" href="present.css" />
+  </head>
+  <body>
+    <div class="viewport">
+      <div class="stage" id="stage" aria-live="polite"></div>
+    </div>
+
+    <nav class="deck-nav" id="deck-nav" aria-label="Slides">
+      <button type="button" id="nav-prev" aria-label="Previous slide">←</button>
+      <div class="deck-dots" id="deck-dots"></div>
+      <button type="button" id="nav-next" aria-label="Next slide">→</button>
+      <span class="deck-hint">← → move · F fullscreen · R refresh data</span>
+    </nav>
+
+    <div class="tip" id="tip" role="tooltip" hidden></div>
+
+    <div class="login" id="status">
+      <div class="login-card">
+        <p class="login-mark" aria-hidden="true">🍪</p>
+        <h1>Biscuit Arena results</h1>
+        <p id="status-msg">Loading the results…</p>
+        <button type="button" id="status-retry" hidden>Try again</button>
+      </div>
+    </div>
+
+    <script src="api-config.js"></script>
+    <script src="present.js"></script>
+  </body>
+</html>

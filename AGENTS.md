@@ -23,6 +23,7 @@ touching infrastructure — it will save an hour.
 ```
 public/            static frontend (no build step, no dependencies)
 public/biscuits/   packet shot of each biscuit (WebP, transparent), referenced from config.json
+public/present.*    results slide deck (present.html; public, reads anonymised /api/show)
 server.js          API + static file server (node:http + node:sqlite, zero deps)
 data/config.json   the 12 biscuits (Family + Cream Favourites), the app title
 data/arena.db      SQLite database (git-ignored)

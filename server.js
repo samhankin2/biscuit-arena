@@ -306,6 +306,24 @@ async function handleApi(req, res, url) {
     return handleAdmin(req, res, pathname, method);
   }
 
+  // GET /api/show — public, anonymised data for the results deck (present.html):
+  // every submission's scores and comments, but no names, emails or device ids.
+  if (pathname === "/api/show" && method === "GET") {
+    const subs = db
+      .prepare("SELECT id, comment, created_at FROM submissions ORDER BY id")
+      .all();
+    const bySub = new Map();
+    for (const r of db.prepare("SELECT submission_id, biscuit_id, score, comment FROM ratings").all()) {
+      if (!bySub.has(r.submission_id)) bySub.set(r.submission_id, []);
+      bySub.get(r.submission_id).push({ biscuit_id: r.biscuit_id, score: r.score, comment: r.comment });
+    }
+    return sendJson(res, 200, {
+      ok: true,
+      biscuits: allBiscuits,
+      submissions: subs.map((s) => ({ ...s, ratings: bySub.get(s.id) || [] })),
+    });
+  }
+
   if (pathname === "/api/results" && method === "GET") {
     return sendJson(res, 200, buildResults());
   }
